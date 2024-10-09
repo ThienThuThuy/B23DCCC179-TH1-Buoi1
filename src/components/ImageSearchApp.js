@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
-const ImageList = ({ images }) => {
+const ImageList = () => {
+  const images = useSelector((state) => state.imageSearch.images);
+  
   return (
-    <div style={{ height: 500, overflowY: "scroll" }}>
+    <div style={{ height: 500, overflowY: 'scroll' }}>
       {images.length > 0 ? (
         <ul>
           {images.map((image) => (
@@ -20,14 +23,14 @@ const ImageList = ({ images }) => {
 };
 
 const ImageSearchApp = () => {
-  const [images, setImages] = useState([]);
-  const [query, setQuery] = useState("");
+  const dispatch = useDispatch();
+  const query = useSelector((state) => state.imageSearch.query);
 
   const fetchImages = async () => {
     const response = await axios.get(
       `https://pixabay.com/api/?key=46166847-40e887f0f1cbd269c98d3b401&q=${query.trim()}&image_type=photo`
     );
-    setImages(response?.data?.hits ?? []);
+    dispatch({ type: 'SET_IMAGES', payload: response?.data?.hits ?? [] });
   };
 
   const handleSearch = (e) => {
@@ -36,26 +39,18 @@ const ImageSearchApp = () => {
   };
 
   return (
-    <div
-      style={{
-        margin: 24,
-        width: 500,
-        paddingRight: 24,
-        border: "3px solid #ccc",
-        textAlign: "center",
-      }}
-    >
+    <div style={{ margin: 24, width: 500, paddingRight: 24, border: '3px solid #ccc', textAlign: 'center' }}>
       <h1>Tìm kiếm hình ảnh</h1>
       <form onSubmit={handleSearch}>
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => dispatch({ type: 'SET_QUERY', payload: e.target.value })}
           placeholder="Tìm kiếm hình ảnh"
         />
         <button type="submit">Tìm</button>
       </form>
-      <ImageList images={images} />
+      <ImageList />
     </div>
   );
 };

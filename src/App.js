@@ -1,14 +1,14 @@
+// src/App.js
 import React from 'react';
-import ImageSearchApp from './components/ImageSearch/ImageSearchApp';
-import RamdomColorApp from './components/RandomColor/RandomColorApp';
-import TodoApp from './components/TodoList/TodoApp';
-import './App.css'; // Import the CSS file
+import ImageSearchApp from './components/ImageSearchApp';
+import RandomColorApp from './components/RandomColorApp';
+import TodoApp from './components/TodoApp';
 
 const App = () => {
   return (
-    <div className="app-container">
+    <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'flex-start', gap: '20px', flexWrap: 'wrap' }}>
       <ImageSearchApp />
-      <RamdomColorApp />
+      <RandomColorApp />
       <TodoApp />
     </div>
   );
